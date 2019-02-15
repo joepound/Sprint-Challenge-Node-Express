@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const projectDB = require("./model");
-const actionDB = require("../actions/model");
 
 const errors = require("./errors");
 

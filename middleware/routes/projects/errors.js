@@ -66,11 +66,12 @@ module.exports = {
   PUT_PROJECT_NOT_FOUND: {
     title: "Project PUT: project not found",
     description: "No project with the supplied ID exists",
-    recoveryInstructions: "Please ensure that the correct project ID is supplied."
+    recoveryInstructions:
+      "Please ensure that the correct project ID is supplied."
   },
 
   PUT_PROJECT_FAILURE: {
     title: "Project PUT: failure",
     description: "Could not update project due to an internal server error."
-  },
+  }
 };
