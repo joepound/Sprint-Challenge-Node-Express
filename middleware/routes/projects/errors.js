@@ -28,12 +28,6 @@ module.exports = {
     description: "Could not create project due to an internal server error."
   },
 
-  DELETE_PROJECT_NOT_FOUND: {
-    title: "Project DELETE: project not found",
-    description: "No project with the supplied ID exists",
-    recoveryInstructions: "Please ensure that the correct project ID is supplied."
-  },
-
   DELETE_PROJECT_EXISTENCE_CHECK_FAILURE: {
     title: "Project DELETE: could not check project information",
     description:
@@ -55,5 +49,22 @@ module.exports = {
   DELETE_PROJECT_FAILURE: {
     title: "Project DELETE: failure",
     description: "Could not delete project due to an internal server error."
+  },
+
+  PUT_PROJECT_NO_VALID_CHANGES: {
+    title: "Project POST: no valid changes supplied",
+    description: "No valid changes were supplied for the new project.",
+    recoveryInstructions: "Please supply some valid changes and try again."
+  },
+
+  PUT_PROJECT_NOT_FOUND: {
+    title: "Project PUT: project not found",
+    description: "No project with the supplied ID exists",
+    recoveryInstructions: "Please ensure that the correct project ID is supplied."
+  },
+
+  PUT_PROJECT_FAILURE: {
+    title: "Project PUT: failure",
+    description: "Could not update project due to an internal server error."
   },
 };

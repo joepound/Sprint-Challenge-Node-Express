@@ -103,43 +103,34 @@ router.delete("/:id", (req, res) => {
   projectDB
     .get(id)
     .then(project => {
-      if (project) {
-        console.log(`Proceeding to delete project ID [${id}]...`);
-        projectDB
-          .remove(id)
-          .then(deletionCount => {
-            if (deletionCount === 1) {
-              res.status(200).json({
-                success: true,
-                project
-              })
-            } else {
-              const code = 404;
-              res.status(code).json({
-                success: false,
-                code,
-                errorInfo: deletionCount
-                  ? errors.DELETE_PROJECT_MULTIPLE_DELETED_ENTRIES
-                  : errors.DELETE_PROJECT_NO_DELETED_ENTRIES
-              });
-            }
-          })
-          .catch(err => {
+      console.log(`Proceeding to delete project ID [${id}]...`);
+      projectDB
+        .remove(id)
+        .then(deletionCount => {
+          if (deletionCount === 1) {
+            res.status(200).json({
+              success: true,
+              project
+            });
+          } else {
             const code = 500;
             res.status(code).json({
               success: false,
               code,
-              errorInfo: errors.DELETE_PROJECT_FAILURE
+              errorInfo: deletionCount
+                ? errors.DELETE_PROJECT_MULTIPLE_DELETED_ENTRIES
+                : errors.DELETE_PROJECT_NO_DELETED_ENTRIES
             });
+          }
+        })
+        .catch(err => {
+          const code = 500;
+          res.status(code).json({
+            success: false,
+            code,
+            errorInfo: errors.DELETE_PROJECT_FAILURE
           });
-      } else {
-        const code = 404;
-        res.status(code).json({
-          success: false,
-          code,
-          errorInfo: errors.DELETE_PROJECT_NOT_FOUND
         });
-      }
     })
     .catch(err => {
       const code = 500;
@@ -150,6 +141,58 @@ router.delete("/:id", (req, res) => {
       });
     })
     .finally(console.log(`DELETE attempt for project ID [${id}] finished.`));
+});
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+
+  console.log(
+    `\nAttempting to PUT information updates for project ID [${id}]...`
+  );
+
+  const projectChanges = req.body;
+
+  console.log("Checking if any valid changes were supplied...");
+  if (
+    projectChanges.name ||
+    projectChanges.description ||
+    projectChanges.completed !== undefined
+  ) {
+    projectDB
+      .update(id, projectChanges)
+      .then(project => {
+        if (project) {
+          res.status(200).json({
+            success: true,
+            project
+          });
+        } else {
+          const code = 404;
+          res.status(code).json({
+            success: false,
+            code,
+            errorInfo: errors.PUT_PROJECT_NOT_FOUND
+          });
+        }
+      })
+      .catch(err => {
+        const code = 500;
+        res.status(code).json({
+          success: false,
+          code,
+          errorInfo: errors.PUT_PROJECT_FAILURE
+        });
+      })
+      .finally(console.log(`PUT attempt for project ID [${id}] finished.`));
+  } else {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.PUT_PROJECT_NO_VALID_CHANGES
+    });
+    console.log(`PUT attempt for project ID [${id}] finished.`);
+  }
 });
 
 module.exports = router;
