@@ -109,4 +109,53 @@ router.post("/", (req, res) => {
   } 
 });
 
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  console.log(`\nAttempting to DELETE action ID [${id}]...`);
+
+  console.log("Checking if specified action exists...");
+  actionDB
+    .get(id)
+    .then(action => {
+      console.log(`Proceeding to delete action ID [${id}]...`);
+      actionDB
+        .remove(id)
+        .then(deletionCount => {
+          if (deletionCount === 1) {
+            res.status(200).json({
+              success: true,
+              action
+            });
+          } else {
+            const code = 500;
+            res.status(code).json({
+              success: false,
+              code,
+              errorInfo: deletionCount
+                ? errors.DELETE_ACTION_MULTIPLE_DELETED_ENTRIES
+                : errors.DELETE_ACTION_NO_DELETED_ENTRIES
+            });
+          }
+        })
+        .catch(err => {
+          const code = 500;
+          res.status(code).json({
+            success: false,
+            code,
+            errorInfo: errors.DELETE_ACTION_FAILURE
+          });
+        });
+    })
+    .catch(err => {
+      const code = 500;
+      res.status(code).json({
+        success: false,
+        code,
+        errorInfo: errors.DELETE_ACTION_EXISTENCE_CHECK_FAILURE
+      });
+    })
+    .finally(console.log(`DELETE attempt for action ID [${id}] finished.`));
+});
+
 module.exports = router;
