@@ -50,4 +50,48 @@ router.get("/", (req, res) => {
     .finally(console.log("GET all projects attempt finished."));
 });
 
+router.post("/", (req, res) => {
+  console.log("\nAttempting to POST new project...");
+
+  const newProject = req.body;
+  
+  console.log("Checking if required fields were supplied...");
+  if (!newProject.name) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_PROJECT_NO_NAME
+    });
+    console.log("Project POST attempt finished.");
+  } else if (!newProject.description) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_PROJECT_NO_DESCRIPTION
+    });
+    console.log("Project POST attempt finished.");
+  } else {
+    console.log("Proceeding to create project...");
+    projectDB
+      .insert(newProject)
+      .then(project =>
+        res.status(201).json({
+          success: true,
+          project
+        })
+      )
+      .catch(err => {
+        const code = 500;
+        res.status(code).json({
+          success: false,
+          code,
+          errorInfo: errors.POST_PROJECT_FAILURE
+        });
+      })
+      .finally(console.log("Project POST attempt finished."));
+  }
+});
+
 module.exports = router;
