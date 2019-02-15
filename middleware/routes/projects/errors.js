@@ -11,6 +11,12 @@ module.exports = {
       "Could not retrieve information on the specified project due to an internal server error."
   },
 
+  GET_PROJECT_ACTIONS_FAILURE: {
+    title: "Project actions GET: failure",
+    description:
+      "Could not retrieve actions in the specified project due to an internal server error."
+  },
+
   POST_PROJECT_NO_NAME: {
     title: "Project POST: missing name",
     description: "No name was supplied for the new project.",

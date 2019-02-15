@@ -6,6 +6,32 @@ const actionDB = require("../actions/model");
 
 const errors = require("./errors");
 
+router.get("/:id/actions", (req, res) => {
+  const { id } = req.params;
+
+  console.log(`Attempting to GET actions from project with ID [${id}]...`);
+
+  projectDB
+    .getProjectActions(id)
+    .then(actions =>
+      res.status(200).json({
+        success: true,
+        actions
+      })
+    )
+    .catch(err => {
+      const code = 500;
+      res.status(code).json({
+        success: false,
+        code,
+        errorInfo: errors.GET_PROJECT_ACTIONS_FAILURE
+      });
+    })
+    .finally(
+      console.log(`GET attempt for actions in project ID [${id}] finished.`)
+    );
+});
+
 router.get("/:id", (req, res) => {
   const { id } = req.params;
 
