@@ -49,4 +49,64 @@ router.get("/", (req, res) => {
     .finally(console.log("GET all actions attempt finished."));
 });
 
+router.post("/", (req, res) => {
+  console.log("\nAttempting to POST new action...");
+
+  const newAction = req.body;
+
+  console.log("Checking if required fields were supplied and have valid values...");
+  if (!newAction.project_id) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_ACTION_NO_ASSOCIATED_PROJECT
+    });
+    console.log("Action POST attempt finished.");
+  } else if (!newAction.description) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_ACTION_NO_DESCRIPTION
+    });
+    console.log("Action POST attempt finished.");
+  } else if (newAction.description.length > 128) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_ACTION_DESCRIPTION_TOO_LONG
+    });
+    console.log("Action POST attempt finished.");
+  } else if (!newAction.notes) {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.POST_ACTION_NO_NOTES
+    });
+    console.log("Action POST attempt finished.");
+  } else {
+    console.log("Proceeding to create action...");
+    actionDB
+      .insert(newAction)
+      .then(action =>
+        res.status(201).json({
+          success: true,
+          action
+        })
+      )
+      .catch(err => {
+        const code = 500;
+        res.status(code).json({
+          success: false,
+          code,
+          errorInfo: errors.POST_ACTION_FAILURE
+        });
+      })
+      .finally(console.log("Action POST attempt finished."));
+  } 
+});
+
 module.exports = router;
