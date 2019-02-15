@@ -1,8 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, withRouter } from "react-router-dom";
 
-import "./index.scss";
-
+import DataProvider from "./providers/DataProvider";
 import App from "./App";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const AppWithRouter = withRouter(App);
+
+ReactDOM.render(
+  <DataProvider>
+    <Router>
+      <AppWithRouter />
+    </Router>
+  </DataProvider>,
+  document.getElementById("root")
+);
