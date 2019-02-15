@@ -1,5 +1,9 @@
 # Sprint Challenge: Express and Node.js - Projects & Actions
 
+Client URL: https://joepound-ls-sprint-projectsapp.netlify.com/
+
+Server URL: https://joepound-ls-sprint-projectsapp.herokuapp.com/
+
 This challenge allows you to practice the concepts and techniques learned over the past Sprint and apply them in a concrete project. This Sprint explored Building RESTful Web APIs with Express and Node.js, Server-side Routing, Express Middleware & Deployment and Good Practices. In your challenge for this Sprint, you will demonstrate proficiency by creating an Web API using Node.js and Express.
 
 ## Instructions
