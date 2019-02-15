@@ -7,7 +7,7 @@
 Express is able to utilize **routing** to determine what kind of operation to perform based on the URL and type of HTTP request. 
 
 ## _Middleware_
-Express is able to utilize middleware from various sources - it can use **custom middleware** made by the developer (including routes), ready-made **third party middleware**, and even **built-in middleware** to extend functionality. _Routing also falls into the category of built-in middleware._ The idea is to keep Express _lightweight_ but allow for the option to add more features with the tradeoff of increase memory and performance load, potentially at various rates depending on the middleware used.
+Express is able to utilize middleware from various sources - it can use **custom middleware** made by the developer (including routes), ready-made **third party middleware**, and even **built-in middleware** to extend functionality. _Routing also falls into the category of custom middleware._ The idea is to keep Express _lightweight_ but allow for the option to add more features with the tradeoff of increase memory and performance load, potentially at various rates depending on the middleware used.
 
 
 # 2. Describe Middleware?
