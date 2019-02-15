@@ -5,11 +5,12 @@ import { DataContext } from "../providers/DataProvider";
 
 function ProjectPage(props) {
   document.title = "View Project - Node Projects sprint app";
+
   const { selectedProject, getSelectedProject } = useContext(DataContext);
 
-  // useEffect(() => {
-  //   getProjects();
-  // }, []);
+  useEffect(() => {
+    getSelectedProject(props.match.params.id);
+  }, []);
 
   return (
     <>
@@ -23,11 +24,9 @@ function ProjectPage(props) {
             {selectedProject.actions.length ? (
               <ul>
                 {selectedProject.actions.map(action => (
-                  <>
-                    <li>
-                      {action.description} -> {action.notes}
-                    </li>
-                  </>
+                  <li key={action.id}>
+                    {action.description} -> {action.notes}
+                  </li>
                 ))}
               </ul>
             ) : (

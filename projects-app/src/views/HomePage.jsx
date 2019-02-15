@@ -5,6 +5,7 @@ import { DataContext } from "../providers/DataProvider";
 
 function HomePage(props) {
   document.title = "Home - Node Projects sprint app";
+  
   const { projects, getProjects, getSelectedProject } = useContext(DataContext);
 
   useEffect(() => {
