@@ -69,6 +69,12 @@ module.exports = {
     recoveryInstructions: "Please supply some valid changes and try again."
   },
 
+  PUT_ACTION_DESCRIPTION_TOO_LONG: {
+    title: "Action PUT: description too long",
+    description: "The supplied action description exceeded the 128-character limit.",
+    recoveryInstructions: "Please supply a shorter description and try again."
+  },
+
   PUT_ACTION_NOT_FOUND: {
     title: "Action PUT: action not found",
     description: "No action with the supplied ID exists",

@@ -54,7 +54,9 @@ router.post("/", (req, res) => {
 
   const newAction = req.body;
 
-  console.log("Checking if required fields were supplied and have valid values...");
+  console.log(
+    "Checking if required fields were supplied and have valid values..."
+  );
   if (!newAction.project_id) {
     const code = 400;
     res.status(code).json({
@@ -106,7 +108,7 @@ router.post("/", (req, res) => {
         });
       })
       .finally(console.log("Action POST attempt finished."));
-  } 
+  }
 });
 
 router.delete("/:id", (req, res) => {
@@ -156,6 +158,68 @@ router.delete("/:id", (req, res) => {
       });
     })
     .finally(console.log(`DELETE attempt for action ID [${id}] finished.`));
+});
+
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+
+  console.log(
+    `\nAttempting to PUT information updates for action ID [${id}]...`
+  );
+
+  const actionChanges = req.body;
+
+  console.log("Checking if any valid changes were supplied...");
+  if (
+    actionChanges.project_id ||
+    actionChanges.description ||
+    actionChanges.notes ||
+    actionChanges.completed !== undefined
+  ) {
+    if (actionChanges.description && actionChanges.description.length > 128) {
+      const code = 400;
+      res.status(code).json({
+        success: false,
+        code,
+        errorInfo: errors.PUT_ACTION_DESCRIPTION_TOO_LONG
+      });
+    } else {
+      actionDB
+        .update(id, actionChanges)
+        .then(action => {
+          if (action) {
+            res.status(200).json({
+              success: true,
+              action
+            });
+          } else {
+            const code = 404;
+            res.status(code).json({
+              success: false,
+              code,
+              errorInfo: errors.PUT_ACTION_NOT_FOUND
+            });
+          }
+        })
+        .catch(err => {
+          const code = 500;
+          res.status(code).json({
+            success: false,
+            code,
+            errorInfo: errors.PUT_ACTION_FAILURE
+          });
+        })
+        .finally(console.log(`PUT attempt for action ID [${id}] finished.`));
+    }
+  } else {
+    const code = 400;
+    res.status(code).json({
+      success: false,
+      code,
+      errorInfo: errors.PUT_ACTION_NO_VALID_CHANGES
+    });
+    console.log(`PUT attempt for action ID [${id}] finished.`);
+  }
 });
 
 module.exports = router;
